@@ -91,6 +91,8 @@ dependencies {
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
 
+    // Koin
+    testImplementation('org.koin:koin-test:2.0.1') { exclude group: 'org.mockito' }
 
     // Dependencies for local unit tests
     testImplementation "junit:junit:$junitVersion"
