@@ -50,6 +50,7 @@ class SaveReminderFragment : BaseFragment() {
     private lateinit var reminderDataItem : ReminderDataItem
 
     private lateinit var geofencingClient: GeofencingClient
+
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(requireContext(), GeofenceBroadcastReceiver::class.java)
@@ -248,8 +249,7 @@ class SaveReminderFragment : BaseFragment() {
 
     /*
   *  When we get the result from asking the user to turn on device location, we call
-  *  checkDeviceLocationSettingsAndStartGeofence again to make sure it's actually on, but
-  *  we don't resolve the check to keep the user from seeing an endless loop.
+  *  checkDeviceLocationSettingsAndStartGeofence again to make sure it's actually on
   */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

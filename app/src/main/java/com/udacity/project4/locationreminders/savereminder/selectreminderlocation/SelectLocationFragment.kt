@@ -35,20 +35,11 @@ import java.util.*
 class SelectLocationFragment : BaseFragment(),OnMapReadyCallback  {
 
     companion object {
-        private const val TAG = "SaveReminderFragment"
-
         private const val FINE_LOCATION_PERMISSION_REQUEST_CODE = 1
-        private const val TURN_DEVICE_LOCATION_ON_REQUEST_CODE = 29
-
-        private val DEFAULT_LAT_LNG = LatLng(-34.0, 151.0)  // Sydney
     }
 
     enum class MapZoomLevel(val level: Float) {
-        World(1f),
-        Landmass(5f),
-        City(10f),
-        Streets(15f),
-        Buildings(20f)
+        Streets(15f)
     }
 
     //Use Koin to get the view model of the SaveReminder

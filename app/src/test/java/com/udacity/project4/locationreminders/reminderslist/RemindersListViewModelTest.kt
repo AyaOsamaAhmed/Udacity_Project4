@@ -22,8 +22,8 @@ class RemindersListViewModelTest  : AutoCloseKoinTest() {
 
     // : provide testing to the RemindersListViewModel and its live data objects
 
-    private lateinit var fakeReminderDataSource: FakeDataSource
-    private lateinit var remindersViewModel: RemindersListViewModel
+    private lateinit var fakeDataSource: FakeDataSource
+    private lateinit var viewModel: RemindersListViewModel
 
     // Executes each task synchronously using Architecture Components.
     @get:Rule
@@ -35,20 +35,20 @@ class RemindersListViewModelTest  : AutoCloseKoinTest() {
 
     @Before
     fun setupViewModel() {
-        fakeReminderDataSource = FakeDataSource()
-        remindersViewModel = RemindersListViewModel(
+        fakeDataSource = FakeDataSource()
+        viewModel = RemindersListViewModel(
             ApplicationProvider.getApplicationContext(),
-            fakeReminderDataSource)
+            fakeDataSource)
     }
 
     @Test
     fun testShouldReturnError () = runBlockingTest  {
-        fakeReminderDataSource.setShouldReturnError(true)
+        fakeDataSource.setReturnError(true)
         saveReminderFakeData()
-        remindersViewModel.loadReminders()
+        viewModel.loadReminders()
 
         MatcherAssert.assertThat(
-            remindersViewModel.showSnackBar.value, CoreMatchers.`is`("Reminders not found")
+            viewModel.showSnackBar.value, CoreMatchers.`is`("not found")
         )
     }
 
@@ -57,22 +57,22 @@ class RemindersListViewModelTest  : AutoCloseKoinTest() {
 
         mainCoroutineRule.pauseDispatcher()
         saveReminderFakeData()
-        remindersViewModel.loadReminders()
+        viewModel.loadReminders()
 
-        MatcherAssert.assertThat(remindersViewModel.showLoading.value, CoreMatchers.`is`(true))
+        MatcherAssert.assertThat(viewModel.showLoading.value, CoreMatchers.`is`(true))
 
         mainCoroutineRule.resumeDispatcher()
-        MatcherAssert.assertThat(remindersViewModel.showLoading.value, CoreMatchers.`is`(false))
+        MatcherAssert.assertThat(viewModel.showLoading.value, CoreMatchers.`is`(false))
     }
 
     private suspend fun saveReminderFakeData() {
-        fakeReminderDataSource.saveReminder(
+        fakeDataSource.saveReminder(
             ReminderDTO(
-                "title abc",
-                "description abc",
-                "location abc",
-                77.00,
-                77.00)
+                "title",
+                "description",
+                "location",
+                7272.00,
+                7227.00)
         )
     }
 

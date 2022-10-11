@@ -17,8 +17,7 @@ class RemindersListViewModel(
     val remindersList = MutableLiveData<List<ReminderDataItem>>()
 
     /**
-     * Get all the reminders from the DataSource and add them to the remindersList to be shown on the UI,
-     * or show error if any
+     * get list reminders from DB and show in recycler
      */
     fun loadReminders() {
         showLoading.value = true

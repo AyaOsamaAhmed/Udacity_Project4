@@ -78,14 +78,14 @@ class ReminderListFragmentTest  : AutoCloseKoinTest(){
             single { RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(appContext) }
         }
-        //declare a new koin module
+        //declare a koin module
         startKoin {
             modules(listOf(myModule))
         }
         //Get our real repository
         repository = get()
 
-        //clear the data to start fresh
+        //clear  data to start fresh
         runBlocking {
             repository.deleteAllReminders()
         }

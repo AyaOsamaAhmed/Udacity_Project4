@@ -26,8 +26,8 @@ class SaveReminderViewModelTest : AutoCloseKoinTest() {
 
     //: provide testing to the SaveReminderView and its live data objects
 
-    private lateinit var fakeReminderDataSource: FakeDataSource
-    private lateinit var saveReminderViewModel: SaveReminderViewModel
+    private lateinit var fakeDataSource: FakeDataSource
+    private lateinit var saveViewModel: SaveReminderViewModel
 
 
     // Executes each task synchronously using Architecture Components.
@@ -40,45 +40,45 @@ class SaveReminderViewModelTest : AutoCloseKoinTest() {
 
     @Before
     fun setupViewModel() {
-        fakeReminderDataSource = FakeDataSource()
-        saveReminderViewModel = SaveReminderViewModel(
+        fakeDataSource = FakeDataSource()
+        saveViewModel= SaveReminderViewModel(
             ApplicationProvider.getApplicationContext(),
-            fakeReminderDataSource)
+            fakeDataSource)
     }
     @Test
     fun shouldReturnError () = runBlockingTest  {
-        val result = saveReminderViewModel.validateEnteredData(createIncompleteReminderDataItem())
+        val result = saveViewModel.validateEnteredData(createIncompleteReminderDataItem())
         MatcherAssert.assertThat(result, CoreMatchers.`is`(false))
     }
 
     private fun createIncompleteReminderDataItem(): ReminderDataItem {
         return ReminderDataItem(
-            "",
-            "description abc",
-            "location abc",
-            77.00,
-            77.00)
+            "title",
+            "description",
+            "location",
+            7171.00,
+            7227.00)
     }
 
     @Test
     fun check_loading() = runBlockingTest {
 
         mainCoroutineRule.pauseDispatcher()
-        saveReminderViewModel.saveReminder(createFakeReminderDataItem())
+        saveViewModel.saveReminder(createFakeReminderDataItem())
 
-        MatcherAssert.assertThat(saveReminderViewModel.showLoading.value, CoreMatchers.`is`(true))
+        MatcherAssert.assertThat(saveViewModel.showLoading.value, CoreMatchers.`is`(true))
 
         mainCoroutineRule.resumeDispatcher()
-        MatcherAssert.assertThat(saveReminderViewModel.showLoading.value, CoreMatchers.`is`(false))
+        MatcherAssert.assertThat(saveViewModel.showLoading.value, CoreMatchers.`is`(false))
     }
 
     private fun createFakeReminderDataItem(): ReminderDataItem {
         return ReminderDataItem(
-            "title abc",
-            "description abc",
-            "location abc",
-            77.00,
-            77.00)
+            "title",
+            "description",
+            "location",
+            7272.00,
+            7227.00)
     }
 
 

@@ -38,19 +38,16 @@ import org.koin.test.get
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 //END TO END test to black box test the app
+// Extended Koin Test - embed autoclose @after method to close Koin after every test
 class RemindersActivityTest :
-    AutoCloseKoinTest() {// Extended Koin Test - embed autoclose @after method to close Koin after every test
+    AutoCloseKoinTest() {
 
     private lateinit var repository: ReminderDataSource
     private lateinit var appContext: Application
 
-    // An idling resource that waits for Data Binding to have no pending bindings.
+    // An idling resource that waits for Data Binding
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
-    /**
-     * As we use Koin as a Service Locator Library to develop our code, we'll also use Koin to test our code.
-     * at this step we will initialize Koin related code to be able to use it in out testing.
-     */
     @Before
     fun init() {
         stopKoin()//stop the original app koin
@@ -71,14 +68,14 @@ class RemindersActivityTest :
             single { RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(appContext) }
         }
-        //declare a new koin module
+        //declare a  koin module
         startKoin {
             modules(listOf(myModule))
         }
         //Get our real repository
         repository = get()
 
-        //clear the data to start fresh
+        //clear  data to start fresh
         runBlocking {
             repository.deleteAllReminders()
         }
@@ -89,7 +86,7 @@ class RemindersActivityTest :
 
     /**
      * Idling resources tell Espresso that the app is idle or busy. This is needed when operations
-     * are not scheduled in the main Looper (for example when executed on a different thread).
+     * are not scheduled in the main Looper
      */
     @Before
     fun registerIdlingResource() {
@@ -97,7 +94,7 @@ class RemindersActivityTest :
     }
 
     /**
-     * Unregister your Idling Resource so it can be garbage collected and does not leak any memory.
+     * garbage collected and does not leak any memory.
      */
     @After
     fun unregisterIdlingResource() {
@@ -138,7 +135,6 @@ class RemindersActivityTest :
         activityScenario.close()
     }
 
-    // get activity context
     private fun getActivity(activityScenario: ActivityScenario<RemindersActivity>): Activity {
         lateinit var activity: Activity
         activityScenario.onActivity {

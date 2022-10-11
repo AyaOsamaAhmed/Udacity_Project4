@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.udacity.project4.R
 import com.udacity.project4.locationreminders.RemindersActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import com.udacity.project4.databinding.ActivityAuthenticationBinding
 
 /**
  * This class should be the starting point of the app, It asks the users to sign in / register, and redirects the
@@ -22,11 +24,13 @@ class AuthenticationActivity : AppCompatActivity() {
     companion object {
         const val SIGN_IN_REQUEST_CODE = 1001
     }
+    private lateinit var binding : ActivityAuthenticationBinding
+
     private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_authentication)
+        binding =  DataBindingUtil.setContentView(this, R.layout.activity_authentication)
 
 //          a bonus is to customize the sign in flow to look nice using :
         //https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md#custom-layout
@@ -35,26 +39,16 @@ class AuthenticationActivity : AppCompatActivity() {
         viewModel.authenticationState.observe(this, Observer { authenticationState ->
             when (authenticationState) {
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    Log.i(
-                        "VTSEN",
-                        "Authentication state: $authenticationState"
-                    )
-
                     startRemindersActivity()
                 }
-
-//                else ->
-//                    // do nothing
-//                )
             }
         })
 
+        binding.login.setOnClickListener {
+            launchSignInFlow()
+        }
     }
 
-
-    fun onLoginClick(view: android.view.View) {
-        launchSignInFlow()
-    }
 
     private fun launchSignInFlow() {
 
@@ -78,24 +72,14 @@ class AuthenticationActivity : AppCompatActivity() {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 Log.i(
-                    "VTSEN",
+                    "result Login",
                     "Successfully signed in user " +
                             "${FirebaseAuth.getInstance().currentUser?.displayName}!"
                 )
                 startRemindersActivity()
-
-                // Successfully signed in
-//                val user = FirebaseAuth.getInstance().currentUser
-////                val intent = Intent(this, RemindersActivity::class.java).apply {
-////                    putExtra(EXTRA_MESSAGE, user)
-////                }
-
-
             } else {
                 // Sign in failed. If response is null the user canceled the sign-in flow using
-                // the back button. Otherwise check response.getError().getErrorCode() and handle
-                // the error.
-                Log.i("VTSEN", "Sign in unsuccessful ${response?.error?.errorCode}")
+                Log.i("result Login", "Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }
     }

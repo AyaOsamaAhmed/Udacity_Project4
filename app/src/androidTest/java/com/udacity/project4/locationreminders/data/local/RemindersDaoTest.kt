@@ -38,10 +38,7 @@ class RemindersDaoTest {
     fun initDb() {
         // Using an in-memory database so that the information stored here disappears when the
         // process is killed.
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            RemindersDatabase::class.java
-        ).build()
+        database = Room.inMemoryDatabaseBuilder(ApplicationProvider.getApplicationContext(), RemindersDatabase::class.java).build()
     }
 
     @After
